@@ -32,7 +32,8 @@ public class FBEventsDao {
         return user;
     }
 
-    public void addUsers(FBEvents fbEvents) {
+   
+    public void addEvent(FBEvents fbEvents) {
 
         mongoTemplate.save(fbEvents);
     }

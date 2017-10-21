@@ -1,5 +1,7 @@
 package org.springframework.samples.mvc.views;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,11 +17,12 @@ public class EventController {
 
 	@RequestMapping(value="get", method=RequestMethod.GET)
 	public  void get() {
-		 fbEventsService.getEvents();
+		 List<FBEvents> fbEvents = fbEventsService.getEvents();
+		 for (FBEvents fbEvent : fbEvents) {
+			 fbEventsService.save(fbEvent);
+		 }		 
 	}
-
-
-
-
-
+	
+	
+	
 }
