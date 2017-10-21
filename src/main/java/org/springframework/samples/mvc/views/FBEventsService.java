@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by psekar on 10/21/17.
@@ -21,17 +22,26 @@ public class FBEventsService {
     @Autowired
     ObjectMapper objectMapper;
 
-    public void getEvents() {
+    public List<FBEvents> getEvents() {
         RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<FBEvents> responseEntity = restTemplate.getForEntity(url, FBEvents.class, new HashMap<>());
+        List<FBEvents> fbEvents = null;
+        ResponseEntity<List> responseEntity = restTemplate.getForEntity(url, List.class, new HashMap<>());
         if(responseEntity.getStatusCode().equals(HttpStatus.OK)) {
-            FBEvents fbEvents = responseEntity.getBody();
-            try {
-                objectMapper.writeValueAsString(fbEvents);
-            } catch (JsonProcessingException e) {
-                e.printStackTrace();
-            }
+            fbEvents = (List<FBEvents>)responseEntity.getBody();
         }
+        return fbEvents;
+    }
+    
+
+    @Autowired
+    private FBEventsDao fbEventsDao;
+
+    public void save(FBEvents fbEvents) {
+    	fbEventsDao.addEvent(fbEvents);
+    }
+
+    public User get(String userId) {
+        return fbEventsDao.getUsers(userId);
     }
 
 }
