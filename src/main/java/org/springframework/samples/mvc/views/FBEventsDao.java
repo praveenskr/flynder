@@ -38,4 +38,10 @@ public class FBEventsDao {
         mongoTemplate.save(fbEvents);
     }
 
+    public EventDetails isEventExists(String eventId){
+
+        Query searchUserQuery = new Query(Criteria.where("eventId").is(eventId));
+        EventDetails eventDetails = mongoTemplate.findOne(searchUserQuery, EventDetails.class);
+        return eventDetails;    
+    }
 }

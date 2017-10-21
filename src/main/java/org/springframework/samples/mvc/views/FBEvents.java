@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class FBEvents {
 	
-	@Id
+	@JsonProperty("id")
     private String id;
 	@JsonProperty("rsvp_status")
     private String rsvp_status;

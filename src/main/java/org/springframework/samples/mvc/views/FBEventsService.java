@@ -17,15 +17,20 @@ import java.util.List;
 @Service
 public class FBEventsService {
 
-    public static String url = "https://graph.facebook.com/v2.10/1526298254123626/events?access_token=EAAByTJgYNysBADeFUbh6xccEjPCZBkJZCI79oAFHWclfPO9k4D3LJ2d210GeYwR5TAabE18XqWloTQZBkQUwAftgh0XY8n3jR96Tf0GAaRIypuAIm5Ijf8XU1AwdwiknQTRn7JM9B11gGAbKBzn3EulUKPGO9qiqEJQ4iH2o99sPCMZBEKelZChqvVYCGgNA64I74KgJjfQZDZD&debug=all&format=json&method=get&pretty=0&suppress_http_code=1";
+    public static String url = "https://graph.facebook.com/v2.10/";
 
     @Autowired
     ObjectMapper objectMapper;
 
-    public List<FBEvents> getEvents() {
+    public List<FBEvents> getEvents(String userId, String accessToken) {
         RestTemplate restTemplate = new RestTemplate();
         List<FBEvents> fbEvents = null;
-        ResponseEntity<List> responseEntity = restTemplate.getForEntity(url, List.class, new HashMap<>());
+        StringBuffer url = new StringBuffer();
+        url.append(userId);
+        url = url.append("/events?access_token=");
+        url = url.append(accessToken);
+        url = url.append("&debug=all&format=json&method=get&pretty=0&suppress_http_code=1");
+        ResponseEntity<List> responseEntity = restTemplate.getForEntity(url.toString(), List.class, new HashMap<>());
         if(responseEntity.getStatusCode().equals(HttpStatus.OK)) {
             fbEvents = (List<FBEvents>)responseEntity.getBody();
         }
@@ -42,6 +47,11 @@ public class FBEventsService {
 
     public User get(String userId) {
         return fbEventsDao.getUsers(userId);
+    }
+
+    public EventDetails isEventExists(String eventId){
+		return fbEventsDao.isEventExists(eventId);
+    	
     }
 
 }
