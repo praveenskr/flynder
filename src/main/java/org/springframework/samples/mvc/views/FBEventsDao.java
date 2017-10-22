@@ -44,4 +44,17 @@ public class FBEventsDao {
         EventDetails eventDetails = mongoTemplate.findOne(searchUserQuery, EventDetails.class);
         return eventDetails;    
     }
+    
+    public String getUserIdForGivenUser(String userId){
+
+        Query searchUserQuery = new Query(Criteria.where("userId").is(userId));
+        User user = mongoTemplate.findOne(searchUserQuery, EvenIdsPaxIdsVO.class);
+        try {
+            objectMapper.writeValueAsString(user);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return user.getUserId();
+    
+    }
 }

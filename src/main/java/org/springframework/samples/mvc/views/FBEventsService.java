@@ -54,4 +54,7 @@ public class FBEventsService {
     	
     }
 
+    public String getUserIdForGivenUser(String userId){
+    	return fbEventsDao.getUserIdForGivenUser(userId);
+    }
 }

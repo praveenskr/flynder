@@ -48,4 +48,11 @@ public class EventController {
 			 }
 		 }		 
 	}
+	
+	
+	public String pushNotificationAuth(String userId){
+		fbEventsService.getUserIdForGivenUser();
+		
+	}
+	
 }
