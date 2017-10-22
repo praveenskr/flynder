@@ -100,6 +100,9 @@ public class FBEventsService {
 
 	public void saveEventPaxSortedDetails(HashMap eventPaxDetails) {
     	fbEventsDao.saveEventPaxSortedDetails(eventPaxDetails);
+
+	public void saveEventPaxSortedDetails(EvenIdsPaxIdsVO evenIdsPaxIdsVO) {
+    	fbEventsDao.saveEventPaxSortedDetails(evenIdsPaxIdsVO);
     }
 
 }

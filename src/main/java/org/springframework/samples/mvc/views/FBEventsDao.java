@@ -44,9 +44,9 @@ public class FBEventsDao {
         mongoTemplate.save(fbEvents);
     }
     
-    public void saveEventPaxSortedDetails(HashMap eventPaxDetails) {
+    public void saveEventPaxSortedDetails(EvenIdsPaxIdsVO evenIdsPaxIdsVO) {
 
-        mongoTemplate.save(eventPaxDetails);
+        mongoTemplate.save(evenIdsPaxIdsVO);
     }
     
 
