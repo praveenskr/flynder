@@ -86,4 +86,20 @@ public class FBEventsService {
 
     }
 
+
+	// Added by Jithin R Shenoy
+	public List getAllEventDetails() {
+		List<EventDetails> eventdetails =  mongoTemplate.findAll(EventDetails.class);
+		try {
+			objectMapper.writeValueAsString(eventdetails);
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		}
+		return eventdetails;
+	}
+
+	public void saveEventPaxSortedDetails(HashMap eventPaxDetails) {
+    	fbEventsDao.saveEventPaxSortedDetails(eventPaxDetails);
+    }
+
 }

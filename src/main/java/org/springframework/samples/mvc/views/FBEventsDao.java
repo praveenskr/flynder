@@ -2,6 +2,9 @@ package org.springframework.samples.mvc.views;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.util.HashMap;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -40,6 +43,12 @@ public class FBEventsDao {
 
         mongoTemplate.save(fbEvents);
     }
+    
+    public void saveEventPaxSortedDetails(HashMap eventPaxDetails) {
+
+        mongoTemplate.save(eventPaxDetails);
+    }
+    
 
     public void addEvent(List<FBEvents> fbEvents) {
 
