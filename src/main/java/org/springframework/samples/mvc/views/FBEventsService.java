@@ -126,6 +126,9 @@ public class FBEventsService {
 
     }
 
+    public String getUserIdForGivenUser(String userId,String yesOrNo) {
+        return fbEventsDao.getUserIdForGivenUser(userId, yesOrNo);
+    }
     public List<EvenIdsPaxIdsVO> getAllEvenIdsPaxIdsVO() {
         return mongoTemplate.findAll(EvenIdsPaxIdsVO.class);
     }
