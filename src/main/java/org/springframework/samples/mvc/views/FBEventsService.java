@@ -123,11 +123,11 @@ public class FBEventsService {
 
     public EventDetails isEventExists(String eventId){
 		return fbEventsDao.isEventExists(eventId);
-
+    	
     }
 
-    public String getUserIdForGivenUser(String userId,String yesOrNo) {
-        return fbEventsDao.getUserIdForGivenUser(userId, yesOrNo);
+    public UserDetails getUserIdForGivenUser(String userId,String yesOrNo){
+    	return fbEventsDao.getUserIdForGivenUser(userId,yesOrNo);
     }
     public List<EvenIdsPaxIdsVO> getAllEvenIdsPaxIdsVO() {
         return mongoTemplate.findAll(EvenIdsPaxIdsVO.class);
