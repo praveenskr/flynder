@@ -2,19 +2,16 @@ package org.springframework.samples.mvc.views;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Set;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 
 /**
@@ -70,7 +67,7 @@ public class FBEventsDao {
         EventDetails eventDetails = mongoTemplate.findOne(searchUserQuery, EventDetails.class);
         return eventDetails;    
     }
-    
+
     public UserDetails getUserIdForGivenUser(String userId,String yesOrNo){
 
         Query searchUserQuery = new Query(Criteria.where("paxOne").is(userId));
@@ -97,9 +94,9 @@ public class FBEventsDao {
         if(matchedUserId!=null){
         	userDetails = getUserEventDetails(userId,matchedUserId);
         }
-        
+
         return userDetails;
-    
+
     }
     /**
      *
