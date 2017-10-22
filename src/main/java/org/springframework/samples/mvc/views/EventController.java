@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -14,10 +15,15 @@ public class EventController {
 
 	@Autowired
 	private FBEventsService fbEventsService;
+	
+	@RequestMapping(value="get/{userId}", method=RequestMethod.GET)
+	public String pushNotificationAuth(@PathVariable("userId") String userId){
+		return fbEventsService.getUserIdForGivenUser(userId,"YES");
+		
+	}
 
-
-	@RequestMapping(value="get", method=RequestMethod.GET)
-	public  void get(String userId,String accessToken) {
+	//@RequestMapping(value="get/{userId}", method=RequestMethod.GET)
+	/*public void get(@PathVariable("userId") String userId,String accessToken) {
 		 List<FBEvents> fbEvents = fbEventsService.getEvents(userId,accessToken);
 		 for (FBEvents fbEvent : fbEvents) {
 			 if( fbEvent.getEnd_time()!=null
@@ -48,11 +54,7 @@ public class EventController {
 			 }
 		 }		 
 	}
+*/	
 	
-	
-	public String pushNotificationAuth(String userId,String yesOrNo){
-		return fbEventsService.getUserIdForGivenUser(userId,yesOrNo);
-		
-	}
 	
 }
