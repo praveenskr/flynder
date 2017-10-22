@@ -6,8 +6,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import java.util.List;
-
 @Controller
 @RequestMapping("event/")
 public class EventController {
@@ -16,7 +14,7 @@ public class EventController {
 	private FBEventsService fbEventsService;
 
 	@RequestMapping(value="get/{userId}", method=RequestMethod.GET)
-	public String pushNotificationAuth(@PathVariable("userId") String userId){
+	public UserDetails pushNotificationAuth(@PathVariable("userId") String userId){
 		return fbEventsService.getUserIdForGivenUser(userId,"YES");
 
 	}
