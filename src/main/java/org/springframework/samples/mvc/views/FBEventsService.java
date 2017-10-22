@@ -54,7 +54,7 @@ public class FBEventsService {
     	
     }
 
-    public String getUserIdForGivenUser(String userId,String yesOrNo){
+    public UserDetails getUserIdForGivenUser(String userId,String yesOrNo){
     	return fbEventsDao.getUserIdForGivenUser(userId,yesOrNo);
     }
 }

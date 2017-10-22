@@ -51,7 +51,7 @@ public class FBEventsDao {
         return eventDetails;    
     }
     
-    public String getUserIdForGivenUser(String userId,String yesOrNo){
+    public UserDetails getUserIdForGivenUser(String userId,String yesOrNo){
 
         Query searchUserQuery = new Query(Criteria.where("paxOne").is(userId));
         UserDetails userDetails = null;        
@@ -78,7 +78,7 @@ public class FBEventsDao {
         	userDetails = getUserEventDetails(userId,matchedUserId);
         }
         
-        return matchedUserId;
+        return userDetails;
     
     }
     /**
