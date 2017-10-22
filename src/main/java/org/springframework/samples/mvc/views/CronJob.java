@@ -27,32 +27,36 @@ public class CronJob {
 
 		List<EventDetails> allEventDetails = fbEventsService.getAllEventDetails();
 		boolean isFirst = true;
-		HashMap<String, List<String>> eventPaxIds = new HashMap<>();
 		for (EventDetails evenDetails : allEventDetails) {
 			String eventId = evenDetails.getEventId();
-			List<String> userIds = evenDetails.getUserIds();
+			HashMap<String, Boolean> userIds = evenDetails.getUserIds();
 			String refGender = null;
 			String refUserId = null;
 			if (userIds != null && !userIds.isEmpty()) {
-				for (String userId : userIds) {
+				for (String userId : userIds.keySet()) {
 					if (isFirst) {
 						refUserId = userId;
 						User refUser = fbUsersService.get(userId);
 						refGender = refUser.getGender();
 						isFirst = false;
 					} else {
-						List<String> paxIds = new ArrayList<String>();
+						//HashMap<String, Boolean> paxIdHashMap = new HashMap<String, Boolean>();
+						EvenIdsPaxIdsVO evenIdsPaxIdsVO = new EvenIdsPaxIdsVO();
 						User user = fbUsersService.get(userId);
 						String Gender = user.getGender();
 						if (!refGender.equals(Gender)) { // ready to save
-							paxIds.add(refUserId);
-							paxIds.add(userId);
+							HashMap<String, Boolean> paxIdHashMap = null;
+							paxIdHashMap.put(refUserId, false);
+							evenIdsPaxIdsVO.setPaxOne(paxIdHashMap);
+							paxIdHashMap.put(userId, false);
+							evenIdsPaxIdsVO.setPaxOne(paxIdHashMap);
 						}
-						eventPaxIds.put(eventId, paxIds);
+						evenIdsPaxIdsVO.setEventId(eventId);
+						fbEventsService.saveEventPaxSortedDetails(evenIdsPaxIdsVO);
 					}
 				}
 			}
 		}
-		fbEventsService.saveEventPaxSortedDetails(eventPaxIds);
+		
 	}
 }
