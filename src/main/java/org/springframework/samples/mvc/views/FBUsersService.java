@@ -21,4 +21,8 @@ public class FBUsersService {
         return fbUsersDao.getUsers(userId);
     }
 
+    public void down() {
+        System.out.println("out");
+    }
+
 }
