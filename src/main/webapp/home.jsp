@@ -20,6 +20,6 @@
 <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
 <script>window.jQuery || document.write('<script src="jquery-3.2.1.min.js"><\/script>')</script>
 <script src="main.js"></script>
-<fb:login-button scope="public_profile,email,user_likes,user_events,pages_messaging,pages_messaging_phone_number" onlogin="checkLoginState();">
+<fb:login-button scope="public_profile,email,user_likes,user_events,pages_messaging,pages_messaging_phone_number,user_location" onlogin="checkLoginState();">
 </body>
 </html>
