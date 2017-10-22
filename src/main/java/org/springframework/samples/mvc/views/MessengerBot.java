@@ -17,12 +17,11 @@ import java.util.List;
 @Component
 public class MessengerBot {
 
-    public static String base_url = "https://graph.facebook.com/v2.6/me/messages?access_token=";
+    public static String base_url = "https://murmuring-sierra-83851.herokuapp.com/push";
 
-    private static String page_access_token = "";
+    private static String page_access_token = "EAAByTJgYNysBAMjUhREhX0ZBOHqFQjMZCs6CJGWGkZCcg3yHgbYwLl4Up3TE2j4aX12tVx52MfqRdWFVfJ8WfExbX7rQkgRXYeZAGHPZCAjgiK4yQIXBAYwrOINQliGibpAKsrJaS5zwkryLOje2UreY0tdEJebqwzKTnKqtikjz53DnCceVN";
 
-    @Autowired
-    RestTemplate restTemplate;
+    
 
     @Autowired
     ObjectMapper objectMapper;
@@ -30,15 +29,16 @@ public class MessengerBot {
     @Autowired
     FBUsersDao fbUsersDao;
     
-    private static String INTIAL_BOT_MESSAGE_BODY = "{'recipient':{'phone_number':'{mobile}'},'message':{'text':'{text_message}'}}";
 
-    public void initiateFirstMessageToUser(String mobile, String message) {
+
+    public boolean initiateFirstMessageToUser(String mobile, String message) {
+        String INTIAL_BOT_MESSAGE_BODY = "{\"recipient\":{\"phone_number\":\"{mobile}\"},\"message\":{\"text\":\"{text_message}\"}}";
         RestTemplate restTemplate = new RestTemplate();
-        INTIAL_BOT_MESSAGE_BODY.replace("{mobile}", mobile);
-        INTIAL_BOT_MESSAGE_BODY.replace("{text_message}", message);
+        INTIAL_BOT_MESSAGE_BODY = INTIAL_BOT_MESSAGE_BODY.replace("{mobile}", mobile);
+        INTIAL_BOT_MESSAGE_BODY = INTIAL_BOT_MESSAGE_BODY.replace("{text_message}", message);
         List<FBEvents> fbEvents = null;
         StringBuffer url = new StringBuffer(base_url);
-        url.append(page_access_token);
+        //url.append(page_access_token);
         FirstMessengerBotMessage firstMessengerBotMessage = null;
         try {
             firstMessengerBotMessage = objectMapper.readValue(INTIAL_BOT_MESSAGE_BODY, FirstMessengerBotMessage.class);
@@ -49,8 +49,10 @@ public class MessengerBot {
         if(responseEntity.getStatusCode().equals(HttpStatus.OK)) {
             User user = fbUsersDao.getUserByMobile(firstMessengerBotMessage.getRecipient().getPhoneNumber());
             user.setMessengerUserId(responseEntity.getBody().getRecipientId());
+            return true;
         } else {
             System.out.println("First Notify user failed");
+            return false;
         }
     }
 

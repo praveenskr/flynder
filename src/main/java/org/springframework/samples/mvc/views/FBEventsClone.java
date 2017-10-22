@@ -1,17 +1,14 @@
 package org.springframework.samples.mvc.views;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.springframework.data.annotation.Id;
 
 /**
  * Created by psekar on 10/21/17.
  */
-public class FBEvents {
+public class FBEventsClone {
 
-    @Id
+	@JsonProperty("id")
     private String id;
-	@JsonProperty("eventId")
-    private String eventId;
 	@JsonProperty("rsvp_status")
     private String rsvp_status;
 	@JsonProperty("end_time")
@@ -34,14 +31,6 @@ public class FBEvents {
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public String getEventId() {
-        return eventId;
-    }
-
-    public void setEventId(String eventId) {
-        this.eventId = eventId;
     }
 
     public String getUserId() {
@@ -115,6 +104,6 @@ public class FBEvents {
     @Override
     public String toString()
     {
-        return "ClassPojo [id = "+eventId+", rsvp_status = "+rsvp_status+", end_time = "+end_time+", description = "+description+", name = "+name+", start_time = "+start_time+", place = "+place+"]";
+        return "ClassPojo [id = "+id+", rsvp_status = "+rsvp_status+", end_time = "+end_time+", description = "+description+", name = "+name+", start_time = "+start_time+", place = "+place+"]";
     }
 }

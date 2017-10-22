@@ -1,15 +1,18 @@
 package org.springframework.samples.mvc.views;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mongodb.WriteResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -35,9 +38,22 @@ public class FBEventsService {
         url = url.append("/events?access_token=");
         url = url.append(accessToken);
         url = url.append("&debug=all&format=json&method=get&pretty=0&suppress_http_code=1");
-        ResponseEntity<List> responseEntity = restTemplate.getForEntity(url.toString(), List.class, new HashMap<>());
+        ResponseEntity<FBEventsParentObjClone> responseEntity = restTemplate.getForEntity(url.toString(), FBEventsParentObjClone.class, new HashMap<>());
         if(responseEntity.getStatusCode().equals(HttpStatus.OK)) {
-            fbEvents = (List<FBEvents>)responseEntity.getBody();
+            fbEvents = new ArrayList<>();
+            List<FBEventsClone> fbEventsClones = responseEntity.getBody().getFbEvents();
+            for (FBEventsClone fbEventsClone1 : fbEventsClones) {
+                FBEvents fbEvents1 = new FBEvents();
+                fbEvents1.setUserId(fbEventsClone1.getUserId());
+                fbEvents1.setDescription(fbEventsClone1.getDescription());
+                fbEvents1.setEnd_time(fbEventsClone1.getEnd_time());
+                fbEvents1.setName(fbEventsClone1.getName());
+                fbEvents1.setPlace(fbEventsClone1.getPlace());
+                fbEvents1.setRsvp_status(fbEventsClone1.getRsvp_status());
+                fbEvents1.setStart_time(fbEventsClone1.getStart_time());
+                fbEvents1.setEventId(fbEventsClone1.getId());
+                fbEvents.add(fbEvents1);
+            }
         }
         return fbEvents;
     }
@@ -48,6 +64,11 @@ public class FBEventsService {
 
     public void save(FBEvents fbEvents) {
     	fbEventsDao.addEvent(fbEvents);
+    }
+
+    public FBEvents getFbEvent(String eventId) {
+        Query searchUserQuery = new Query(Criteria.where("eventId").is(eventId));
+        return mongoTemplate.findOne(searchUserQuery, FBEvents.class);
     }
 
     public void save(List<FBEvents> fbEventsList) {
@@ -73,8 +94,27 @@ public class FBEventsService {
         return mongoTemplate.findOne(searchUserQuery, EventDetails.class);
     }
 
-	public void saveEventPaxSortedDetails(HashMap eventPaxDetails) {
+	public void saveEventPaxSortedDetails(List<EvenIdsPaxIdsVO> eventPaxDetails) {
     	fbEventsDao.saveEventPaxSortedDetails(eventPaxDetails);
+    }
+
+    public void saveEventPaxSortedDetails(EvenIdsPaxIdsVO eventPaxDetails) {
+        fbEventsDao.saveEventPaxSortedDetails(eventPaxDetails);
+    }
+
+    public EvenIdsPaxIdsVO getEvenIdsPaxIdsVO(String id) {
+        Query searchUserQuery = new Query(Criteria.where("eventId").is(id));
+        return mongoTemplate.findOne(searchUserQuery, EvenIdsPaxIdsVO.class);
+    }
+
+    public void updateEvenIdsPaxIdsVO(EvenIdsPaxIdsVO evenIdsPaxIdsVO) {
+        Query query = new Query();
+        query.addCriteria(Criteria.where("eventId").is(evenIdsPaxIdsVO.getEventId()));
+        Update update = new Update();
+        update.set("sentMessage",  "notified");
+
+        WriteResult wr = mongoTemplate.updateMulti(
+                new Query(Criteria.where("eventId").is(evenIdsPaxIdsVO.getEventId())),new Update().set("sentMessage", "notified"),EvenIdsPaxIdsVO.class);
     }
 
     public void saveEventDetails(EventDetails eventDetails) {
@@ -86,23 +126,8 @@ public class FBEventsService {
 
     }
 
-
-	// Added by Jithin R Shenoy
-	public List getAllEventDetails() {
-		List<EventDetails> eventdetails =  mongoTemplate.findAll(EventDetails.class);
-		try {
-			objectMapper.writeValueAsString(eventdetails);
-		} catch (JsonProcessingException e) {
-			e.printStackTrace();
-		}
-		return eventdetails;
-	}
-
-	public void saveEventPaxSortedDetails(HashMap eventPaxDetails) {
-    	fbEventsDao.saveEventPaxSortedDetails(eventPaxDetails);
-
-	public void saveEventPaxSortedDetails(EvenIdsPaxIdsVO evenIdsPaxIdsVO) {
-    	fbEventsDao.saveEventPaxSortedDetails(evenIdsPaxIdsVO);
+    public List<EvenIdsPaxIdsVO> getAllEvenIdsPaxIdsVO() {
+        return mongoTemplate.findAll(EvenIdsPaxIdsVO.class);
     }
 
 }

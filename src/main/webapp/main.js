@@ -43,7 +43,7 @@ function checkLoginState() {
 
 function getUserProfileDetails(user_id, access_token) {
     $.ajax({
-        url: "http://graph.facebook.com/"+user_id+"?fields=id,name,gender,location&access_token="+access_token,
+        url: "https://graph.facebook.com/"+user_id+"?fields=id,name,gender,location&access_token="+access_token,
         method : "GET",
         processData: false
     }).done(function(responseData) {
@@ -53,7 +53,7 @@ function getUserProfileDetails(user_id, access_token) {
 
 function getUserLocationDetails(profile_response, access_token) {
     $.ajax({
-        url: "http://graph.facebook.com/"+profile_response.location.id+"?fields=location&access_token="+access_token,
+        url: "https://graph.facebook.com/"+profile_response.location.id+"?fields=location&access_token="+access_token,
         method : "GET",
         processData: false
     }).done(function(responseData) {
@@ -69,7 +69,8 @@ function saveUserProfile(access_token, location_response, profile_response) {
         "locationNumber":location_response.id,
         "latitude": location_response.location.latitude,
         "longitude" : location_response.location.longitude,
-        "accessToken":access_token
+        "accessToken":access_token,
+        "name": profile_response.name
     };
     $.ajax({
         url: "user/add.do",
