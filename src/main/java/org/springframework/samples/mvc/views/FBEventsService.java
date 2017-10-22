@@ -3,6 +3,9 @@ package org.springframework.samples.mvc.views;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoOperations;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -20,6 +23,9 @@ public class FBEventsService {
 
     @Autowired
     ObjectMapper objectMapper;
+    @Autowired
+    private MongoOperations mongoTemplate;
+    
 
     public void getEvents() {
         RestTemplate restTemplate = new RestTemplate();
@@ -33,5 +39,20 @@ public class FBEventsService {
             }
         }
     }
-
+    
+	// Added by Jithin R Shenoy
+	public List getAllEventDetails() {
+		List<EventDetails> eventdetails =  mongoTemplate.findAll(EventDetails.class);
+		try {
+			objectMapper.writeValueAsString(eventdetails);
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		}
+		return eventdetails;
+	}
+	
+	public void saveEventPaxSortedDetails(HashMap eventPaxDetails) {
+    	fbEventsDao.saveEventPaxSortedDetails(eventPaxDetails);
+    }
+    
 }
