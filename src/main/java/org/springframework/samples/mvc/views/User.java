@@ -31,6 +31,28 @@ public class User {
 	@JsonProperty("longitude")
 	String longitude;
 
+	@JsonProperty("messengerUserId")
+	String messengerUserId;
+
+	@JsonProperty("name")
+	String name;
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getMessengerUserId() {
+		return messengerUserId;
+	}
+
+	public void setMessengerUserId(String messengerUserId) {
+		this.messengerUserId = messengerUserId;
+	}
+
 	public String getLatitude() {
 		return latitude;
 	}

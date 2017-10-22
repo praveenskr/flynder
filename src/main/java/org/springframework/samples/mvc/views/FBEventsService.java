@@ -1,6 +1,5 @@
 package org.springframework.samples.mvc.views;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
@@ -20,7 +19,7 @@ import java.util.List;
 @Service
 public class FBEventsService {
 
-    public static String url = "https://graph.facebook.com/v2.10/";
+    public static String base_url = "https://graph.facebook.com/v2.10/";
 
     @Autowired
     ObjectMapper objectMapper;
@@ -31,7 +30,7 @@ public class FBEventsService {
     public List<FBEvents> getEvents(String userId, String accessToken) {
         RestTemplate restTemplate = new RestTemplate();
         List<FBEvents> fbEvents = null;
-        StringBuffer url = new StringBuffer();
+        StringBuffer url = new StringBuffer(base_url);
         url.append(userId);
         url = url.append("/events?access_token=");
         url = url.append(accessToken);
@@ -51,25 +50,36 @@ public class FBEventsService {
     	fbEventsDao.addEvent(fbEvents);
     }
 
+    public void save(List<FBEvents> fbEventsList) {
+        fbEventsDao.addEvent(fbEventsList);
+    }
+
     public User get(String userId) {
         return fbEventsDao.getUsers(userId);
     }
 
 	// Added by Jithin R Shenoy
-	public List getAllEventDetails() {
-		List<EventDetails> eventdetails =  mongoTemplate.findAll(EventDetails.class);
-		try {
-			objectMapper.writeValueAsString(eventdetails);
-		} catch (JsonProcessingException e) {
-			e.printStackTrace();
-		}
-		return eventdetails;
+	public List<EventDetails> getAllEventDetails() {
+		return mongoTemplate.findAll(EventDetails.class);
 	}
+
+    // Added by Jithin R Shenoy
+    public List<FBEvents> getAllFBEvents() {
+        return mongoTemplate.findAll(FBEvents.class);
+    }
+
+    public EventDetails getEventDetails(String eventId) {
+        Query searchUserQuery = new Query(Criteria.where("eventId").is(eventId));
+        return mongoTemplate.findOne(searchUserQuery, EventDetails.class);
+    }
 
 	public void saveEventPaxSortedDetails(HashMap eventPaxDetails) {
     	fbEventsDao.saveEventPaxSortedDetails(eventPaxDetails);
     }
 
+    public void saveEventDetails(EventDetails eventDetails) {
+        mongoTemplate.save(eventDetails);
+    }
 
     public EventDetails isEventExists(String eventId){
 		return fbEventsDao.isEventExists(eventId);

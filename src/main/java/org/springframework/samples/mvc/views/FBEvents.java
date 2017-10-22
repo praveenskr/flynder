@@ -1,7 +1,5 @@
 package org.springframework.samples.mvc.views;
 
-import org.springframework.data.annotation.Id;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -23,6 +21,16 @@ public class FBEvents {
     private String start_time;
 	@JsonProperty("place")
     private Place place;
+	@JsonProperty("userId")
+    private String userId;
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
 
     public String getId ()
     {
