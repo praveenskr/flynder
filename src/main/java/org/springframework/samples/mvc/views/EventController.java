@@ -50,8 +50,8 @@ public class EventController {
 	}
 	
 	
-	public String pushNotificationAuth(String userId){
-		fbEventsService.getUserIdForGivenUser();
+	public String pushNotificationAuth(String userId,String yesOrNo){
+		return fbEventsService.getUserIdForGivenUser(userId,yesOrNo);
 		
 	}
 	
